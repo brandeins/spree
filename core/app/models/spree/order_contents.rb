@@ -42,6 +42,7 @@ module Spree
       shipment.present? ? shipment.update_amounts : order.ensure_updated_shipments
       PromotionHandler::Cart.new(order, line_item).activate
       Adjustable::AdjustmentsUpdater.update(line_item)
+      order.update_line_item_prices!
       TaxRate.adjust(order, [line_item]) if options[:line_item_created]
       persist_totals
       line_item
